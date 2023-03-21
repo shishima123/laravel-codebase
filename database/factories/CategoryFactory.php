@@ -13,7 +13,6 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'slug' => $this->faker->slug(),
             'parent_id' => $this->faker->randomNumber(),
         ];
     }
