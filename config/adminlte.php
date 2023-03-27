@@ -308,13 +308,13 @@ return [
         ],
 
         [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
+            'text' => 'Category',
+            'url'  => 'admin/categories',
+            'icon' => 'far fa-fw fa-file',
         ],
         [
             'text'        => 'pages',
-            'url'         => 'admin/pages',
+            'url'         => 'admin',
             'icon'        => 'far fa-fw fa-file',
             'label'       => 4,
             'label_color' => 'success',
