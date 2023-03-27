@@ -45,9 +45,23 @@ services:
             - codebase_laravel_mysql:/var/lib/mysql
             - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
 
+    minio:
+        image: minio/minio:latest
+        ports:
+            - "8088:8088"
+            - "8900:8900"
+        volumes:
+            - minio-store:/data
+        environment:
+            MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+            MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+        command: server /data --console-address :8900 --address :8088
+        networks:
+            - codebase_laravel_network
 #Docker Networks
 networks:
     codebase_laravel_network:
         driver: bridge
 volumes:
     codebase_laravel_mysql: { }
+    minio-store:
