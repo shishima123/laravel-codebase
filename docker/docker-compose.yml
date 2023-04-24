@@ -58,6 +58,40 @@ services:
         command: server /data --console-address :8900 --address :8088
         networks:
             - codebase_laravel_network
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
+        environment:
+            - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+            - "discovery.type=single-node"
+            - "xpack.security.enabled=false"
+            - "ingest.geoip.downloader.enabled=false"
+        volumes:
+            - elasticsearch-data:/usr/share/elasticsearch/data
+        ports:
+            - "9200:9200"
+        networks:
+            - codebase_laravel_network
+        restart: on-failure
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+            nofile:
+                soft: 65536
+                hard: 65536
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.16.2
+        ports:
+            - "5601:5601"
+        depends_on:
+            - elasticsearch
+        environment:
+            - "xpack.security.authc.http.enabled=false"
+            - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        networks:
+            - codebase_laravel_network
 #Docker Networks
 networks:
     codebase_laravel_network:
@@ -65,3 +99,4 @@ networks:
 volumes:
     codebase_laravel_mysql: { }
     minio-store:
+    elasticsearch-data:
